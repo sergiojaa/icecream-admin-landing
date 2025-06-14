@@ -1,24 +1,25 @@
-import IceCream from "../models/iceCreamModel";
+import userModel from "../models/userModel";
 
-const getIceCreams = async (req, res) => {
+const getUsers = async (req, res) => {
   try {
-    const iceCreams = await IceCream.find({});
-    res.status(200).json(iceCreams);
+    const userModel = await userModel.find({});
+    res.status(200).json(userModel);
   } catch (err) {
     console.error("Error fetching ice creams:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
-const getIceCreamById = async (req, res) => {
+const getUserById = async (req, res) => {
   const { id } = req.params;
   try {
-    const iceCream = await iceCream.findById(id);
-    if (!iceCream) {
+    const userModel = await userModel.findById(id);
+    if (!userModel) {
       return res.status(404).json({
         message: "Ice cream not found",
       });
     }
+    res.status(200).json(userModel);
   } catch (err) {
     console.error("Error fetching ice cream by ID:", err);
     res.status(500).json({ message: "Internal server error" });
