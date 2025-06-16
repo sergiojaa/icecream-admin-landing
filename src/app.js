@@ -1,19 +1,19 @@
 import express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
-const app = express();
+import mongoose from "mongoose";
+import authRoutes from "./routes/userRoutes.js";
 
+const app = express();
 dotenv.config();
+
+app.use(express.json());
+app.use("/api/v1/auth", authRoutes);
 
 mongoose
   .connect(process.env.DB_URI)
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
-  });
+  .then(() => console.log("DB connected"))
+  .catch((err) => console.log(err));
 
 app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+  console.log("Server running on port 3000");
 });
