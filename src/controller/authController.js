@@ -8,7 +8,7 @@ export const signUp = (req, res, next) => {
     },
     "secret",
     {
-      expiresIn: "900d",
+      expiresIn: "90d",
     }
   );
 
