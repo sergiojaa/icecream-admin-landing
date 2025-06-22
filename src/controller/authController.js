@@ -1,24 +1,28 @@
 import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
-export const signUp = (req, res, next) => {
-  const newUser = User.create(req.body);
-  const token = jwt.sign(
-    {
-      id: newUser._id,
-    },
-    "secret",
-    {
-      expiresIn: "90d",
-    }
-  );
+const createToken = (id) => {
+  return jwt.sign({ id }, "secret", { expiresIn: "90d" });
+};
 
-  res.status(201).json({
-    status: "success",
-    token,
-    data: {
-      user: newUser,
-    },
-  });
+export const signUp = async (req, res, next) => {
+  try {
+    const newUser = await User.create(req.body);
+    const token = jwt.sign(newUser._id);
+
+    res.status(201).json({
+      status: "success",
+      token,
+      data: {
+        user: newUser,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
 };
 export const signIn = async (req, res, next) => {
   const { email, password } = req.body;
